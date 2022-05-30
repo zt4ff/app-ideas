@@ -1,0 +1,29 @@
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+#binary-input {
+  border: 1px solid #000;
+  border-radius: 10px;
+  height: 35px;
+  width: 200px;
+  padding: 0 20px;
+}
+
+#binary-input:focus {
+  outline: 2px solid black;
+}
+
+#error {
+  text-align: center;
+  margin-top: 10px;
+  color: red;
+}
+
+#dec {
+  text-align: center;
+  margin-bottom: 10px;
+}
