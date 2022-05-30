@@ -8,5 +8,3 @@ Folders Structure
 | - beginner/
 | - intermediate/
 | - advanced/
-# app-ideas
-# app-ideas
