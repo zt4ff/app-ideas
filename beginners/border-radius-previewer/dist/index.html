@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Border Radius Previewer</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="container">
+      <div id="previewer"></div>
+      <div id="controllers">
+        <label>
+          Top Left (%)
+          <input
+            value="0"
+            type="range"
+            min="0"
+            max="100"
+            name="border-top-left-radius"
+            id="top-left"
+          />
+        </label>
+        <label>
+          Top Right (%)
+          <input
+            value="0"
+            type="range"
+            min="0"
+            max="100"
+            name="border-top-right-radius"
+            id="top-right"
+          />
+        </label>
+        <label>
+          Bottom Left (%)
+          <input
+            value="0"
+            type="range"
+            min="0"
+            max="100"
+            name="border-bottom-left-radius"
+            id="bottom-left"
+          />
+        </label>
+        <label>
+          Bottom Right (%)
+          <input
+            value="0"
+            type="range"
+            min="0"
+            max="100"
+            name="border-bottom-right-radius"
+            id="bottom-right"
+          />
+        </label>
+        <button id="copy-btn">Copy CSS</button>
+      </div>
+    </div>
+    <script src="./main.js"></script>
+  </body>
+</html>

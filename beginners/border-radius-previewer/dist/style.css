@@ -1,0 +1,26 @@
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+#previewer {
+  border: 5px solid black;
+  height: 200px;
+  width: 400px;
+}
+
+#controllers label,
+#controllers button {
+  display: block;
+  margin-top: 20px;
+}
+
+#controllers {
+  position: absolute;
+  top: 100px;
+  left: 50px;
+  background: #0059ff29;
+  padding: 20px;
+}
