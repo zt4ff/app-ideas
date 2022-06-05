@@ -23,7 +23,7 @@ const validateError = (key) => {
         return key;
     }
     else {
-        displayError("input either 1 or 2");
+        displayError("input either 0 or 1");
         return "";
     }
 };
