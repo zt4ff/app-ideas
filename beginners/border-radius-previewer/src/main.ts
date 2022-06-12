@@ -1,3 +1,7 @@
+const previewer = document.getElementById("previewer") as HTMLDivElement;
+const controllers = document.querySelectorAll("input");
+const copyCSSButton = document.querySelector("#copy-btn") as HTMLButtonElement;
+
 const convertToCamelCase = (str: string): string => {
   let strArr = str
     .split("-")
@@ -5,10 +9,6 @@ const convertToCamelCase = (str: string): string => {
     .join("");
   return strArr[0].toLowerCase() + strArr.slice(1);
 };
-
-const previewer = document.getElementById("previewer") as HTMLDivElement;
-const controllers = document.querySelectorAll("input");
-const copyCSSButton = document.querySelector("#copy-btn") as HTMLButtonElement;
 
 controllers.forEach((controller) => {
   controller.addEventListener("change", (e) => {
