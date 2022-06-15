@@ -31,3 +31,5 @@ calcButtons.forEach((calcButton) => {
 clearMainScreenButton === null || clearMainScreenButton === void 0 ? void 0 : clearMainScreenButton.addEventListener("click", () => {
     clearMainScreen();
 });
+// add event listner for styling
+function welcome() { }

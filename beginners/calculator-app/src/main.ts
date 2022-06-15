@@ -8,7 +8,6 @@ const count = [];
 const total = 0;
 
 // FUNCTIONS
-
 const addToTotal = (num: string) => {
   if (mainScreen.innerHTML.length >= MAX_INPUT_LENGTH) return;
 
@@ -37,3 +36,6 @@ calcButtons.forEach((calcButton) => {
 clearMainScreenButton?.addEventListener("click", () => {
   clearMainScreen();
 });
+
+// add event listner for styling
+function welcome() {}
