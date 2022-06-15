@@ -65,3 +65,8 @@ body {
   grid-column: span 2;
   background: #33778a;
 }
+
+.clicked {
+  background: #fff;
+  color: #000;
+}

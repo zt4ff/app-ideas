@@ -1,10 +1,10 @@
 // variables
 const mainScreen = document.querySelector("#main-screen") as HTMLDivElement;
 const accumulator = document.querySelector("#sec-screen") as HTMLDivElement;
-const calcButtons = document.querySelectorAll("#calc-button-number");
+const calcButtonsNumber = document.querySelectorAll("#calc-button-number");
 const clearMainScreenButton = document.querySelector("#clear-main-screen");
+const calcButtonsAll = document.querySelectorAll(".calc-button");
 const MAX_INPUT_LENGTH = 10;
-const count = [];
 const total = 0;
 
 // FUNCTIONS
@@ -26,16 +26,34 @@ const clearMainScreen = () => {
 
 const calcAction = () => {};
 
-// listener
-calcButtons.forEach((calcButton) => {
-  calcButton.addEventListener("click", (e) => {
-    addToTotal((e.target as HTMLDivElement).innerHTML);
+const listenToAllNumberButtons = () => {
+  calcButtonsNumber.forEach((calcButton) => {
+    calcButton.addEventListener("click", (e) => {
+      addToTotal((e.target as HTMLDivElement).innerHTML);
+    });
   });
-});
 
-clearMainScreenButton?.addEventListener("click", () => {
-  clearMainScreen();
-});
+  clearMainScreenButton?.addEventListener("click", () => {
+    clearMainScreen();
+  });
+};
 
-// add event listner for styling
-function welcome() {}
+const addStyleToAllButtonsOnPress = () => {
+  calcButtonsAll.forEach((calcButton) => {
+    calcButton.addEventListener("mousedown", (e) => {
+      (e.target as HTMLDivElement).classList.add("clicked");
+    });
+    calcButton.addEventListener("mouseup", (e) => {
+      (e.target as HTMLDivElement).classList.remove("clicked");
+    });
+  });
+};
+
+// main
+const main = () => {
+  // events listeners
+  addStyleToAllButtonsOnPress();
+  listenToAllNumberButtons();
+};
+
+main();
