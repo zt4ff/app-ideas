@@ -7,6 +7,7 @@ const clearMainScreenButton = document.querySelector("#clear-main-screen");
 const calcButtonsAll = document.querySelectorAll(".calc-button");
 const MAX_INPUT_LENGTH = 10;
 const total = 0;
+const accumulatorArray = [];
 // FUNCTIONS
 const addToTotal = (num) => {
     if (mainScreen.innerHTML.length >= MAX_INPUT_LENGTH)
@@ -21,7 +22,7 @@ const addToTotal = (num) => {
 const clearMainScreen = () => {
     mainScreen.innerHTML = "0";
 };
-const calcAction = () => { };
+const listenToAllOperationsButton = () => { };
 const listenToAllNumberButtons = () => {
     calcButtonsNumber.forEach((calcButton) => {
         calcButton.addEventListener("click", (e) => {
@@ -35,6 +36,9 @@ const listenToAllNumberButtons = () => {
 const addStyleToAllButtonsOnPress = () => {
     calcButtonsAll.forEach((calcButton) => {
         calcButton.addEventListener("mousedown", (e) => {
+            e.target.classList.add("clicked");
+        });
+        calcButton.addEventListener("touchstart", (e) => {
             e.target.classList.add("clicked");
         });
         calcButton.addEventListener("mouseup", (e) => {
