@@ -1,0 +1,36 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #19151a;
+}
+
+svg {
+  height: 700px;
+}
+
+#control {
+  border: 1px solid #000;
+  position: absolute;
+  height: 200px;
+  width: 200px;
+  background: #fff;
+  top: 20px;
+  left: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#control button {
+  padding: 10px 15px;
+  border-radius: 15px;
+  border: 1px solid #000;
+  cursor: pointer;
+}
