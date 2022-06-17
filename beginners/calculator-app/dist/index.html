@@ -1,37 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
-    <title>Calculator App</title>
-    <link rel="stylesheet" href="./style.css" />
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <title>Calculator</title>
   </head>
+
   <body>
-    <div class="calc-container">
-      <div class="calc-screen">
-        <div class="calc-screen__sec" id="sec-screen">&nbsp;</div>
-        <div class="calc-screen__main" id="main-screen">0</div>
+    <div class="calculator">
+      <div class="visor">
+        <div id="accumulator" class="acc"></div>
+        <div id="total" class="total" hidden></div>
       </div>
-      <div class="calc-buttons">
-        <div id="clear-main-screen" class="calc-button light">C</div>
-        <div id="" class="calc-button light">CE</div>
-        <div class="calc-button light">%</div>
-        <div class="calc-button light operation">/</div>
-        <div id="calc-button-number" class="calc-button">7</div>
-        <div id="calc-button-number" class="calc-button">8</div>
-        <div id="calc-button-number" class="calc-button">9</div>
-        <div class="calc-button light operation">X</div>
-        <div id="calc-button-number" class="calc-button">4</div>
-        <div id="calc-button-number" class="calc-button">5</div>
-        <div id="calc-button-number" class="calc-button">6</div>
-        <div class="calc-button light operation">-</div>
-        <div id="calc-button-number" class="calc-button">1</div>
-        <div id="calc-button-number" class="calc-button">2</div>
-        <div id="calc-button-number" class="calc-button">3</div>
-        <div class="calc-button light operation">+</div>
-        <div id="calc-button-number" class="calc-button">0</div>
-        <div class="calc-button">.</div>
-        <div class="calc-button blue">=</div>
-      </div>
+      <div class="numeric action" onclick="CleanAll()">C</div>
+      <div class="numeric action" onclick="CleanCurrentEntry()">CE</div>
+      <div class="numeric action" onclick="Percentage()">%</div>
+      <div class="numeric action" onclick="CalcAction('/')">/</div>
+      <div class="numeric" onclick="AddNumber(7)">7</div>
+      <div class="numeric" onclick="AddNumber(8)">8</div>
+      <div class="numeric" onclick="AddNumber(9)">9</div>
+      <div class="numeric action" onclick="CalcAction('x')">x</div>
+      <div class="numeric" onclick="AddNumber(4)">4</div>
+      <div class="numeric" onclick="AddNumber(5)">5</div>
+      <div class="numeric" onclick="AddNumber(6)">6</div>
+      <div class="numeric action" onclick="CalcAction('-')">-</div>
+      <div class="numeric" onclick="AddNumber(1)">1</div>
+      <div class="numeric" onclick="AddNumber(2)">2</div>
+      <div class="numeric" onclick="AddNumber(3)">3</div>
+      <div class="numeric action" onclick="CalcAction('+')">+</div>
+      <div class="numeric zero" onclick="AddNumber(0)">0</div>
+      <div class="numeric" onclick="AddComma()">,</div>
+      <div class="numeric action result" onclick="Result()">=</div>
     </div>
-    <script src="main.js"></script>
   </body>
+  <script src="./main.js"></script>
 </html>

@@ -1,122 +1,138 @@
 // variables
-const mainScreen = document.querySelector("#main-screen") as HTMLDivElement;
-const accumulator = document.querySelector("#sec-screen") as HTMLDivElement;
-const calcButtonsNumber = document.querySelectorAll("#calc-button-number");
-const clearMainScreenButton = document.querySelector("#clear-main-screen");
-const calcButtonsAll = document.querySelectorAll(".calc-button");
-const calcButtonsOperation = document.querySelectorAll(".operation");
-const MAX_INPUT_LENGTH = 10;
-const total = 0;
-const accumulatorArray: Array<number | undefined> = Array(2).fill(undefined);
-type Operation = "/" | "X" | "-" | "+";
+const total = document.getElementById("total") as HTMLDivElement;
+const accumulator = document.getElementById("accumulator") as HTMLDivElement;
 
-// FUNCTIONS
-const addToTotal = (num: string) => {
-  if (mainScreen.innerHTML.length >= MAX_INPUT_LENGTH) return;
+type ACTION = "+" | "-" | "x" | "/";
 
-  if (mainScreen.innerHTML.length === 1) {
-    if (mainScreen.innerHTML[0] === "0") {
-      return (mainScreen.innerHTML = mainScreen.innerHTML = num);
-    }
+let count: number[] = [];
+let saveAction: ACTION;
+
+const MAX_VISOR_CHAR = 10;
+
+function AddNumber(num: number) {
+  total.removeAttribute("hidden");
+  if (total.innerHTML.length < MAX_VISOR_CHAR) {
+    total.innerHTML += num;
+  }
+}
+
+function CalcAction(action: number) {
+  var currentNumber = total.innerHTML;
+
+  if (currentNumber.length === 0) {
+    return;
   }
 
-  mainScreen.innerHTML += num;
-};
+  count.push(Number(total.innerHTML));
 
-const clearMainScreen = () => {
-  mainScreen.innerHTML = "0";
-};
-
-const performOperation = (numA: number, numB: number, operation: Operation) => {
-  switch (operation) {
-    case "+":
-      return numA + numB;
-    case "-":
-      return numA - numB;
-    case "/":
-      return numA / numB;
-    case "X":
-      return numA * numB;
-    default:
-      // exhausive checks
-      const _exh: never = operation;
+  if (currentNumber.split("")[currentNumber.length - 1] == ".") {
+    accumulator.removeAttribute("hidden");
+    accumulator.innerHTML += ` ${total.innerHTML}0 ${action}`;
+  } else {
+    accumulator.removeAttribute("hidden");
+    accumulator.innerHTML += ` ${total.innerHTML} ${action}`;
   }
-};
 
-const listenToAllOperationsButton = () => {
-  let ppp: number;
-  calcButtonsOperation.forEach((calButton) => {
-    calButton.addEventListener("click", (e) => {
-      let operation: string = (e.target as HTMLDivElement).innerHTML;
-      console.log(operation);
+  total.innerHTML = "";
 
-      if (!accumulatorArray[0]) {
-        accumulatorArray[0] = parseFloat(mainScreen.innerHTML);
-        mainScreen.innerHTML = "0";
-        console.log("first");
+  count.push(action);
+}
 
-        accumulator.innerHTML = `${accumulatorArray[0]}`;
-      } else if (!accumulatorArray[1]) {
-        accumulatorArray[1] = parseFloat(mainScreen.innerHTML);
-        ppp = parseFloat(mainScreen.innerHTML);
-        mainScreen.innerHTML = "0";
-        console.log("second");
+function AddComma() {
+  var currentNumber = total.innerHTML;
 
-        accumulator.innerHTML = `${performOperation(
-          accumulatorArray[0],
-          accumulatorArray[1],
-          operation as Operation
-        )}`;
+  if (currentNumber == "") {
+    total.removeAttribute("hidden");
+    total.innerHTML = "0.";
+  } else if (!currentNumber.includes(".")) {
+    total.innerHTML += ".";
+  }
+}
+
+function Result() {
+  let currentAccum = accumulator.innerHTML;
+  let currentNumber = total.innerHTML;
+
+  if (
+    currentAccum[currentAccum.length - 1] === "=" &&
+    currentNumber.length > 0
+  ) {
+    total.innerHTML = ProcessAction(
+      Number(currentNumber),
+      Number(currentNumber),
+      saveAction
+    )
+      .toString()
+      .substring(0, MAX_VISOR_CHAR);
+  }
+
+  if (count.length === 0) {
+    return;
+  }
+
+  count.push(Number(total.innerHTML));
+  accumulator.innerHTML += ` ${total.innerHTML} =`;
+  ProccessResult();
+}
+
+function ProccessResult() {
+  let action: ACTION | null = null;
+  let current: number | null = null;
+
+  let totalResult = 0;
+
+  if (isNaN(count[count.length - 1])) {
+    count.pop();
+  }
+
+  count.forEach((n) => {
+    if (!isNaN(n)) {
+      if (current == null) {
+        current = n;
       } else {
-        console.log("third");
-        const a = parseFloat(accumulator.innerHTML);
-        const b = parseFloat(mainScreen.innerHTML);
-
-        accumulatorArray[0] = performOperation(a, b, operation as Operation);
-
-        accumulatorArray[1] = undefined;
-        mainScreen.innerHTML = "0";
-
-        accumulator.innerHTML = `${accumulatorArray[0]}`;
+        totalResult += ProcessAction(current, n, action!);
+        current = null;
       }
-
-      console.log(accumulatorArray);
-    });
-  });
-};
-
-const listenToAllNumberButtons = () => {
-  calcButtonsNumber.forEach((calcButton) => {
-    calcButton.addEventListener("click", (e) => {
-      addToTotal((e.target as HTMLDivElement).innerHTML);
-    });
+    } else {
+      action = n as unknown as ACTION;
+      saveAction = n as unknown as ACTION;
+    }
   });
 
-  clearMainScreenButton?.addEventListener("click", () => {
-    clearMainScreen();
-  });
-};
+  if (current != null) {
+    totalResult = ProcessAction(totalResult, current, action!);
+  }
 
-const addStyleToAllButtonsOnPress = () => {
-  calcButtonsAll.forEach((calcButton) => {
-    calcButton.addEventListener("mousedown", (e) => {
-      (e.target as HTMLDivElement).classList.add("clicked");
-    });
-    calcButton.addEventListener("touchstart", (e) => {
-      (e.target as HTMLDivElement).classList.add("clicked");
-    });
-    calcButton.addEventListener("mouseup", (e) => {
-      (e.target as HTMLDivElement).classList.remove("clicked");
-    });
-  });
-};
+  total.innerHTML = totalResult.toString().substring(0, MAX_VISOR_CHAR);
+  count = [];
+}
 
-// main
-const main = () => {
-  // events listeners
-  addStyleToAllButtonsOnPress();
-  listenToAllNumberButtons();
-  listenToAllOperationsButton();
-};
+function ProcessAction(num1: number, num2: number, action: ACTION) {
+  switch (action) {
+    case "+":
+      return num1 + num2;
+    case "-":
+      return num1 - num2;
+    case "x":
+      return num1 * num2;
+    case "/":
+      return num1 / num2;
+  }
+}
 
-main();
+function CleanCurrentEntry() {
+  total.innerHTML = "";
+}
+
+function CleanAll() {
+  total.innerHTML = "";
+  total.innerHTML = "";
+  count = [];
+}
+
+function Percentage() {
+  var currentNumber = total.innerHTML;
+  if (currentNumber != "") {
+    total.innerHTML = `${Number(total.innerHTML) / 100}`;
+  }
+}
