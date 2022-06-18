@@ -1,6 +1,8 @@
 body {
   padding: 0;
   margin: 0;
+  transition: 0.25s;
+  transition-delay: 0.04s;
 }
 
 .control {
@@ -16,11 +18,12 @@ body {
   left: 20px;
 }
 
-.hex-inputs, .increment-control {
-display: flex;
-justify-content: center;
-align-items: center;
-margin: 5px 0;
+.hex-inputs,
+.increment-control {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 5px 0;
 }
 
 .control input {
@@ -28,13 +31,13 @@ margin: 5px 0;
 }
 
 .control button {
-  background: magenta;
-  border: 1px solid blueviolet;
-  padding: 10px 15px;
-  border-radius: 15px;
+  background: #000;
+  color: #fff;
+  border: none;
+  padding: 12px 25px;
   margin-bottom: 5px;
   cursor: pointer;
-  transition: .5s;
+  transition: 0.5s;
 }
 
 .control button:hover {
