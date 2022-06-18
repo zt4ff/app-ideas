@@ -1,0 +1,41 @@
+body {
+  padding: 0;
+  margin: 0;
+  display: grid;
+  width: 100vw;
+  grid-template-columns: 300px 1fr;
+}
+
+#summary-lists {
+  width: 300px;
+  height: 100vh;
+  overflow: scroll;
+  background: #101820ff;
+}
+
+.container > div {
+  margin-bottom: 20px;
+  font-size: 25px;
+}
+
+main {
+  display: flex;
+  color: #fee715ff;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background: #101820ff;
+}
+
+.list {
+  padding: 30px;
+  cursor: pointer;
+  margin: 10px;
+  text-align: center;
+  background: #fee715ff;
+  color: #101820ff;
+}
+
+.list:hover {
+  transform: scale(1.04);
+}
