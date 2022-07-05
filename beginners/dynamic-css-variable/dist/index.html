@@ -1,24 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dynamic CSS variables</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <div class="testuser">
-    <p class="bold">Test User:</p>
-    <p><span class="bold">id</span>: 123</p>
-    <p><span class="bold">password</span>: password</p>
-  </div>
-  <input id="id" type="text" placeholder="Enter ID" />
-  <input id="password" type="text" placeholder="Enter Password" />
-  <div class="buttons">
-    <button id="login">Login</button>
-    <button id="cancel">Cancel</button>
-  </div>
-  <script src="./main.js"></script>
-</body>
+  <head>
+    <title>Dynamic CSS variables</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="testuser">
+      <p class="bold">Test User:</p>
+      <p><span class="bold">id</span>: 123</p>
+      <p><span class="bold">password</span>: password</p>
+    </div>
+    <input id="id" type="text" placeholder="Enter ID" />
+    <input
+      style="color: blue"
+      id="password"
+      type="text"
+      placeholder="Enter Password"
+    />
+    <div class="buttons">
+      <button id="login">Login</button>
+      <button id="cancel">Cancel</button>
+    </div>
+    <script src="./main.js"></script>
+  </body>
 </html>
