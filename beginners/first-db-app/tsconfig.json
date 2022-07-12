@@ -1,7 +1,10 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "outDir": "dist"
+    "outDir": "dist",
+    "moduleResolution": "node",
+    "lib": ["ES5", "ES6", "DOM"],
+    "module": "commonjs"
   },
   "include": ["src/**/*"]
 }
