@@ -4,7 +4,11 @@
     "outDir": "dist",
     "moduleResolution": "node",
     "lib": ["ES5", "ES6", "DOM"],
-    "module": "commonjs"
+    "module": "commonjs",
+    "paths": {
+      "*": ["./src/@types/*"]
+    }
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "src/@types"]
 }
