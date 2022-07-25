@@ -7,6 +7,7 @@ body {
   width: 100vw;
   height: 100vh;
   display: grid;
+  overflow: hidden;
   grid-template-rows: calc(100% - 350px) 350px;
 }
 
@@ -37,6 +38,7 @@ body {
   height: 100%;
   width: 100%;
   z-index: 1;
+  padding: 10px 250px;
   overflow: scroll;
   border-bottom: 1px solid #000;
 }

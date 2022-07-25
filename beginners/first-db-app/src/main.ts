@@ -4,11 +4,15 @@ interface CustomerData {
   email: string;
 }
 
+const logger = (logPanel: HTMLElement, message: string) => {};
+
 class Customer {
   dbName: string;
+  private logContainer: HTMLElement;
 
-  constructor(dbName: string) {
+  constructor(dbName: string, logContainer: HTMLElement) {
     this.dbName = dbName;
+    this.logContainer = logContainer;
 
     // if browser does not support indexdb
     if (!window.indexedDB) {
@@ -18,6 +22,16 @@ class Customer {
     }
   }
 
+  logger(message: string, type: "error" | "success" | "normal") {
+    const notification = document.createElement("p");
+    notification.textContent = `* - ${message}`;
+    const color =
+      type == "error" ? "#f00" : type == "success" ? "#0f0" : "#000";
+    notification.style.color = color;
+
+    this.logContainer.appendChild(notification);
+  }
+
   // remove all rows from the database
   removeAllRows = () => {
     const request = indexedDB.open(this.dbName, 1);
@@ -25,24 +39,26 @@ class Customer {
     request.onerror = (event) => {
       const target = event.target as IDBOpenDBRequest;
 
-      console.log(
-        `removeAllRows - Database error: ${target.error?.code} - ${target.error?.message}`
+      this.logger(
+        `removeAllRows - Database error: ${target.error?.code} - ${target.error?.message}`,
+        "error"
       );
     };
 
     request.onsuccess = (event) => {
-      console.log("Deleting all customer...");
+      this.logger("Deleting all customer...", "normal");
 
       const target = event.target as IDBOpenDBRequest;
       const db = target.result;
       const txn = db.transaction("customer", "readwrite");
 
       txn.onerror = (event) => {
-        console.log(
-          `removeAllRows - Txn error: ${target.error?.code} - ${target.error?.message}`
+        this.logger(
+          `removeAllRows - Txn error: ${target.error?.code} - ${target.error?.message}`,
+          "error"
         );
         txn.oncomplete = (event) => {
-          console.log("All rows removed");
+          this.logger("all rows removed", "success");
         };
 
         const objectStore = txn.objectStore("customers");
@@ -56,22 +72,21 @@ class Customer {
     };
   };
 
-  /**
-   * Populate the Customer database with an initial set of customer data
-   */
+  // Populate the Customer database with an initial set of customer data
   initialLoad = (customerData: CustomerData[]) => {
     const request = indexedDB.open(this.dbName, 1);
 
     request.onerror = (event) => {
       const target = event.target as IDBOpenDBRequest;
 
-      console.log(
-        `initial load - Txn error: ${target.error?.code} - ${target.error?.message}`
+      this.logger(
+        `initial load - Txn error: ${target.error?.code} - ${target.error?.message}`,
+        "error"
       );
     };
 
     request.onupgradeneeded = (event) => {
-      console.log("Populating customers ...");
+      this.logger("Populating customers ...", "normal");
       const target = event.target as IDBOpenDBRequest;
       const db = target.result;
 
@@ -86,34 +101,97 @@ class Customer {
       customerData.forEach((customer) => {
         objectStore.put(customer);
       });
-      db.close();
+
+      target.onsuccess = () => {
+        this.logger("data loaded successfully", "success");
+        db.close();
+      };
     };
+  };
+
+  queryDB = () => {
+    return new Promise((resolve) => {
+      const request = indexedDB.open(this.dbName, 1);
+
+      // onerror
+      request.onerror = (event) => {
+        const target = event.target as IDBOpenDBRequest;
+
+        this.logger(
+          `initial load - Txn error: ${target.error?.code} - ${target.error?.message}`,
+          "error"
+        );
+      };
+
+      request.onsuccess = (event) => {
+        this.logger("querying database...", "normal");
+        const target = event.target as IDBOpenDBRequest;
+        const db = target.result;
+
+        const txn = db.transaction("customer", "readonly");
+        let customers = txn.objectStore("customer");
+        let request = customers.getAll();
+
+        request.onerror = () => this.logger("error querying database", "error");
+
+        request.onsuccess = () => {
+          this.logger("database queried successfully", "success");
+          resolve(request.result);
+        };
+      };
+    });
   };
 }
 
 // clear all customer data from the database
-const clearDB = (databaseName: string) => {
-  let customer = new Customer(databaseName);
+const clearDB = (databaseName: string, logContainer: HTMLElement) => {
+  let customer = new Customer(databaseName, logContainer);
   customer.removeAllRows();
 };
 
-// Add customer to the database
-const loadDB = (databaseName: string) => {
-  console.log("Load the Customers database");
-
-  // Customers to add to initially populate the database with
+const loadDB = (databaseName: string, logContainer: HTMLElement) => {
   const customerData: CustomerData[] = [
     { userid: "444", name: "Bill", email: "bill@company.com" },
     { userid: "555", name: "Donna", email: "donna@home.org" },
   ];
-  let customer = new Customer(databaseName);
+  let customer = new Customer(databaseName, logContainer);
   customer.initialLoad(customerData);
+};
+
+const queryDB = async (databaseName: string, logContainer: HTMLElement) => {
+  let customer = new Customer(databaseName, logContainer);
+
+  return await customer.queryDB();
+};
+
+const displayResult = (data: Array<any> | null, resultPanel: HTMLElement) => {
+  if (data == null) {
+    resultPanel.textContent = "___NO RESULT___";
+  }
+
+  resultPanel.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
 };
 
 // THE MAIN APPLICATION
 function main() {
+  const loadDbButton = document.querySelector("#load") as HTMLButtonElement;
+  const queryDbButton = document.querySelector("#query") as HTMLButtonElement;
+  const clearDbButton = document.querySelector("#clear") as HTMLButtonElement;
+  const logPanel = document.querySelector(".logs") as HTMLDivElement;
+  const resultPanel = document.querySelector(".main") as HTMLDivElement;
+
   const DBNAME = "customer_db";
 
-  loadDB(DBNAME);
+  loadDbButton.addEventListener("click", () => {
+    loadDB(DBNAME, logPanel);
+  });
+
+  queryDbButton.addEventListener("click", async () => {
+    const result = await queryDB(DBNAME, logPanel);
+    displayResult(result as any[], resultPanel);
+  });
 }
-main();
+
+(async () => {
+  await main();
+})();
