@@ -48,6 +48,7 @@ body {
   max-height: 350px;
   width: 100%;
   overflow: scroll;
+  font-size: 20px;
 }
 
 .logs::before {

@@ -8,39 +8,42 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-const logger = (logPanel, message) => { };
 class Customer {
     constructor(dbName, logContainer) {
-        // remove all rows from the database
         this.removeAllRows = () => {
-            const request = indexedDB.open(this.dbName, 1);
-            request.onerror = (event) => {
-                var _a, _b;
-                const target = event.target;
-                this.logger(`removeAllRows - Database error: ${(_a = target.error) === null || _a === void 0 ? void 0 : _a.code} - ${(_b = target.error) === null || _b === void 0 ? void 0 : _b.message}`, "error");
-            };
-            request.onsuccess = (event) => {
-                this.logger("Deleting all customer...", "normal");
-                const target = event.target;
-                const db = target.result;
-                const txn = db.transaction("customer", "readwrite");
-                txn.onerror = (event) => {
+            return new Promise((resolve) => {
+                const request = indexedDB.open(this.dbName, 1);
+                request.onerror = (event) => {
                     var _a, _b;
-                    this.logger(`removeAllRows - Txn error: ${(_a = target.error) === null || _a === void 0 ? void 0 : _a.code} - ${(_b = target.error) === null || _b === void 0 ? void 0 : _b.message}`, "error");
-                    txn.oncomplete = (event) => {
-                        this.logger("all rows removed", "success");
-                    };
-                    const objectStore = txn.objectStore("customers");
+                    const target = event.target;
+                    this.logger(`removeAllRows - Database error: ${(_a = target.error) === null || _a === void 0 ? void 0 : _a.code} - ${(_b = target.error) === null || _b === void 0 ? void 0 : _b.message}`, "error");
+                };
+                request.onsuccess = () => {
+                    console.log("OP MESA");
+                };
+                request.onsuccess = (event) => {
+                    this.logger("Deleting all customer...", "normal");
+                    const target = event.target;
+                    const db = target.result;
+                    const txn = db.transaction("customer", "readwrite");
+                    const objectStore = txn.objectStore("customer");
                     const getAllKeysRequest = objectStore.getAllKeys();
                     getAllKeysRequest.onsuccess = (event) => {
                         getAllKeysRequest.result.forEach((key) => {
                             objectStore.delete(key);
                         });
                     };
+                    txn.onerror = () => {
+                        var _a, _b;
+                        this.logger(`removeAllRows - Txn error: ${(_a = target.error) === null || _a === void 0 ? void 0 : _a.code} - ${(_b = target.error) === null || _b === void 0 ? void 0 : _b.message}`, "error");
+                    };
+                    txn.oncomplete = () => {
+                        this.logger("all rows removed", "success");
+                        resolve;
+                    };
                 };
-            };
+            });
         };
-        // Populate the Customer database with an initial set of customer data
         this.initialLoad = (customerData) => {
             const request = indexedDB.open(this.dbName, 1);
             request.onerror = (event) => {
@@ -57,7 +60,6 @@ class Customer {
                 });
                 objectStore.createIndex("name", "name", { unique: false });
                 objectStore.createIndex("email", "email", { unique: false });
-                // populate the database with the initial set of rows
                 customerData.forEach((customer) => {
                     objectStore.put(customer);
                 });
@@ -70,7 +72,6 @@ class Customer {
         this.queryDB = () => {
             return new Promise((resolve) => {
                 const request = indexedDB.open(this.dbName, 1);
-                // onerror
                 request.onerror = (event) => {
                     var _a, _b;
                     const target = event.target;
@@ -93,8 +94,8 @@ class Customer {
         };
         this.dbName = dbName;
         this.logContainer = logContainer;
-        // if browser does not support indexdb
         if (!window.indexedDB) {
+            this.logger("your browser does not support indexedDB", "error");
             alert("Your browser doesn't support a stable version of IndexedDB.\nSuch and such feature will not be available.");
         }
     }
@@ -106,11 +107,10 @@ class Customer {
         this.logContainer.appendChild(notification);
     }
 }
-// clear all customer data from the database
-const clearDB = (databaseName, logContainer) => {
+const clearDB = (databaseName, logContainer) => __awaiter(void 0, void 0, void 0, function* () {
     let customer = new Customer(databaseName, logContainer);
-    customer.removeAllRows();
-};
+    yield customer.removeAllRows();
+});
 const loadDB = (databaseName, logContainer) => {
     const customerData = [
         { userid: "444", name: "Bill", email: "bill@company.com" },
@@ -124,12 +124,11 @@ const queryDB = (databaseName, logContainer) => __awaiter(void 0, void 0, void 0
     return yield customer.queryDB();
 });
 const displayResult = (data, resultPanel) => {
-    if (data == null) {
-        resultPanel.textContent = "___NO RESULT___";
+    if (data === null || data.length === 0) {
+        return (resultPanel.textContent = "___NO RESULT___");
     }
     resultPanel.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
 };
-// THE MAIN APPLICATION
 function main() {
     const loadDbButton = document.querySelector("#load");
     const queryDbButton = document.querySelector("#query");
@@ -143,6 +142,10 @@ function main() {
     queryDbButton.addEventListener("click", () => __awaiter(this, void 0, void 0, function* () {
         const result = yield queryDB(DBNAME, logPanel);
         displayResult(result, resultPanel);
+    }));
+    clearDbButton.addEventListener("click", () => __awaiter(this, void 0, void 0, function* () {
+        yield clearDB(DBNAME, logPanel);
+        displayResult(null, resultPanel);
     }));
 }
 (() => __awaiter(void 0, void 0, void 0, function* () {
