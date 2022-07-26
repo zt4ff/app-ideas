@@ -1,3 +1,8 @@
+:root {
+  --x-axis: rotate3d(1, 0, 0, -15deg);
+  --y-xis: rotate3d(0, 1, 0, 15deg);
+}
+
 body {
   padding: 0;
   margin: 0;
@@ -11,15 +16,22 @@ body {
 .img-container {
   width: 700px;
   height: 400px;
-  background-color: red;
+  perspective: 900px;
   position: relative;
+}
+
+.img {
+  background: red;
+  height: 100%;
+  width: 100%;
+  transform: var(--x-axis) var(--y-xis);
+  /* degrees or rad can only between -45deg and 45 deg */
 }
 
 input {
   position: absolute;
   z-index: 1;
   margin: 0;
-  /* width: 100px; */
 }
 
 .y-axis {
@@ -32,4 +44,9 @@ input {
 .x-axis {
   width: 700px;
   bottom: -50px;
+}
+
+img {
+  height: 100%;
+  width: 100%;
 }
