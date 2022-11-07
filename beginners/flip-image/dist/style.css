@@ -26,8 +26,6 @@ body {
   background: red;
   height: 100%;
   width: 100%;
-  transform: var(--y-axis) var(--x-xis);
-  /* degrees or rad can only between -45deg and 45 deg */
 }
 
 input {
