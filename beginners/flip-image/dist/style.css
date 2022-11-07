@@ -1,6 +1,7 @@
 :root {
-  --x-axis: rotate3d(1, 0, 0, -15deg);
-  --y-xis: rotate3d(0, 1, 0, 15deg);
+  --y-axis: rotate3d(1, 0, 0, 0deg);
+  --x-xis: rotate3d(0, 1, 0, 0deg);
+  --bg: red;
 }
 
 body {
@@ -11,6 +12,7 @@ body {
   display: flex;
   height: 100vh;
   overflow: hidden;
+  background: var(--bg);
 }
 
 .img-container {
@@ -24,7 +26,7 @@ body {
   background: red;
   height: 100%;
   width: 100%;
-  transform: var(--x-axis) var(--y-xis);
+  transform: var(--y-axis) var(--x-xis);
   /* degrees or rad can only between -45deg and 45 deg */
 }
 
