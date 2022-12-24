@@ -4,9 +4,10 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
-    "request": "^2.88.2"
+    "axios": "^1.2.1"
   },
   "devDependencies": {
-    "@types/request": "^2.48.8"
+    "@types/request": "^2.48.8",
+    "typescript": "^4.9.4"
   }
 }

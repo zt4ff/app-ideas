@@ -1,19 +1,16 @@
 "use strict";
-const getRotateCode = (type, deg) => {
-    const rotateStye = `rotate3d(${type == "y" ? "1, 0, 0" : "0, 1, 0"}, ${deg}deg)`;
-    return rotateStye;
-};
-const imageContainer = document.querySelector(".img");
-let xRotateStyle = "rotate3d(0, 1, 0, 0deg)", yRotateStyle = "rotate3d(1, 0, 0, 0deg)";
-["x-axis", "y-axis"].forEach(axis => {
-    document.querySelector(`.${axis}`).addEventListener("change", event => {
-        const element = event.target;
-        if (element.name === "x") {
-            xRotateStyle = getRotateCode("x", element.value);
-        }
-        else {
-            yRotateStyle = getRotateCode("y", element.value);
-        }
-        imageContainer.style.transform = `${yRotateStyle} ${xRotateStyle}`;
-    });
+fetch("https://www.githubstatus.com/api/v2/components.json")
+    .then((response) => response.json())
+    .then((data) => {
+    console.log(data);
+    updateHomePage(data);
 });
+function updateHomePage(data) {
+    const statusContainers = document.querySelectorAll(".status-container");
+    statusContainers.forEach((statusContainer) => {
+        const statusElement = statusContainer.querySelector(".status");
+        const status = data.components.find((d) => d.name === statusContainer.getAttribute("name")).status;
+        statusElement.innerHTML = status;
+    });
+}
+console.log("welcome home");
