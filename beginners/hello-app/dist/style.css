@@ -1,0 +1,67 @@
+.error {
+  border: 1px solid #f00;
+}
+
+body {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.extra-info {
+  position: absolute;
+  border: 1px solid #000;
+  top: 10px;
+  left: 10px;
+  font-size: 14px;
+  line-height: 4px;
+  padding: 20px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #000;
+  padding: 30px;
+}
+
+input,
+button {
+  margin-top: 30px;
+  padding: 6px;
+}
+
+button {
+  width: 70px;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+button:hover {
+  filter: opacity(0.5);
+}
+
+.red-btn {
+  background: #dc3545;
+}
+
+.green-btn {
+  background: #28a745;
+}
+
+.extra-message {
+  width: 350px;
+  border: 1px solid #000;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 14px;
+  line-height: 4px;
+  padding: 20px;
+  text-align: right;
+}

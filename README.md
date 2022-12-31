@@ -8,3 +8,7 @@ Folders Structure
 | - beginner/
 | - intermediate/
 | - advanced/
+
+## Note
+
+cd to directory then `npx tsc --project tsconfig.json --watch`

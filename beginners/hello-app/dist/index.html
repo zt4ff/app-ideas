@@ -7,5 +7,25 @@
     <title>Hello World</title>
     <link rel="stylesheet" href="style.css" />
   </head>
-  <body></body>
+  <body>
+    <div class="extra-message"></div>
+    <div class="extra-info">
+      <p>You can login with any mock credentials</p>
+    </div>
+    <form>
+      <input type="text" name="username" id="username" placeholder="Username" />
+      <input
+        type="password"
+        name="password"
+        id="password"
+        placeholder="Password"
+      />
+      <div>
+        <button class="green-btn" id="login">Login</button>
+        <button class="red-btn" id="logout">Logout</button>
+      </div>
+    </form>
+
+    <script src="./main.js"></script>
+  </body>
 </html>
