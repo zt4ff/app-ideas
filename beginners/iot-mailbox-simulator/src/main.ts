@@ -4,13 +4,20 @@
  * @class IOTMailbox
  */
 class IOTMailbox {
+  public signalInterval: number;
+  public signalCallback: (lightLevel: number) => {};
+  public intervalID: number | null;
+  public lastLightLevel: number;
   /**
    * Creates an instance of IOTMailbox.
    * @param {number} [signalInterval=500] Timer interval for checking mailbox status.
    * @param {function} signalCallback Function to invoke when the timer interval expires.
    * @memberof IOTMailbox
    */
-  constructor(signalInterval = 500, signalCallback) {
+  constructor(
+    signalInterval = 500,
+    signalCallback: (lightLevel: number) => {}
+  ) {
     this.signalInterval = signalInterval;
     this.signalCallback = signalCallback;
     this.intervalID = null;
@@ -55,7 +62,8 @@ class IOTMailbox {
         ? Math.random().toFixed(2) * -1
         : Math.random().toFixed(2);
     console.log(`Mailbox state changed - lightLevel: ${lightLevel}`);
-    this.signalCallback(this.lightLevel);
-    this.lastLightLevel = lightLevel;
+    // this.signalCallback(this.lightLevel);
+    this.signalCallback(this.lastLightLevel);
+    this.lastLightLevel = lightLevel as number;
   };
 }
