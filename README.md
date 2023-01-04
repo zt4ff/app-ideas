@@ -11,4 +11,4 @@ Folders Structure
 
 ## Note
 
-cd to directory then `npx tsc --project tsconfig.json --watch`
+cd to directory then `npx tsc --project tsconfig.json --watch`.
