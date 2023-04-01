@@ -1,15 +1,30 @@
 // checks for there strings and ensure they match three set of regex
-const allMatchRegex = (values) => {
-    // matches 5 cap, 6 sym and 2 hyphen
-    const regex1 = /^(?=(?:[^A-Z]*[A-Z]){5})(?=(?:[^!@#$%^&*()-_]*[!@#$%^&*()-_]){6})(?:[^-]*-){2}[A-Z!@#$%^&*()-_\-]{13}$/;
-;
-    // matches letter without spaces
-    const regex2 = /d/;
-    // matches only email address
-    const regex3 = /e/
-
-
-    values.filter(value => {
-
-    })
+const allMatchRegex = (inputs) => {
+    const pattersnToMatch = [/hey/, /bee/, /cee/]
+    return pattersnToMatch.filter((pattern, index) => {
+        return pattern.test(inputs[index]?.value)
+    }).length === 3
 }
+
+// main
+(() => {
+    const inputs = document.querySelectorAll("input")
+    const messageBox = document.querySelector("button")
+
+    inputs.forEach((input, index) => {
+        input.addEventListener("input", (e) => {
+            const isMatched = allMatchRegex(inputs)
+            // console.log(isMatched)
+            if (isMatched) {
+                messageBox.classList.remove("btn-danger")
+                messageBox.classList.add("btn-success")
+                messageBox.innerText = "Validated..."
+            } else {
+                messageBox.classList.remove("btn-success")
+                messageBox.classList.add("btn-danger")
+                messageBox.innerText = "Not Validated..."
+            }
+        })
+    })
+
+})();
